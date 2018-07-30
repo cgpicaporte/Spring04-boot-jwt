@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header lead text-primary" th:text="${titulo}"></div>
+			<div class="card-body">
+				<ul class="list-group px-3">
+					<li class="list-group-item active" th:text="'HOLA: ' + ${contacto.nombre}"></li>
+					<li class="list-group-item" style="color:green" th:text="'Sus datos de contacto se han guardado con éxito.'"></li>
+					<li class="list-group-item" th:text="'En breve nos pondremos en contacto con usted.'"></li>
+					<li class="list-group-item"><a th:href="@{'/inicio?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a></li>
+				</ul> 
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="contacto/js/autocomplete-coches :: javascript"></script>
+</body>
+</html>

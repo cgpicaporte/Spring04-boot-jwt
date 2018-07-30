@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header lead text-primary" th:text="${titulo}"></div>
+			<div class="card-body">
+
+
+				
+				<div class="card-columns">
+						 <!--  th:if="${coche.publicado != null AND #strings.length(coche.publicado) > 0}" -->
+					<div class="card" th:each="coche: ${coches}" th:if="${coche.publicado != null AND #strings.equals(coche.publicado,'S')}">
+						<img
+							th:if="${coche.foto != null AND #strings.length(coche.foto) > 0}"
+							class="card-img-top" style="max-width: 100%;"
+							th:src="@{'/uploads/' + ${coche.foto}}" th:alt="${coche.foto}" />
+
+						<div class="card-body">
+							<h5 class="card-title" style="color:red" th:text="${coche.precio} + '&euro;'"></h5>
+							<p class="card-text"
+								th:text="${coche.marca} + ' ' + ${coche.modelo} + ' ' + ${coche.puertas} + 'p. ' + ${coche.ano}"></p>
+							<!-- 								th:if="${coche.puertas != null}"  -->
+							<!-- 							<p th:if="${coche.puertas = null}" class="card-text" th:text="${coche.marca} + ' ' + ${coche.modelo} + ' ' + ${coche.ano}"></p> -->
+							<p class="card-text">
+								<small class="text-muted"
+									th:text="${coche.provincia} + ' ' + ${coche.combustible} + ' ' +${coche.kilometros} + 'Km'"></small>
+							</p>
+							<a class="btn btn-outline-primary btn-block" th:href="@{/ver/} +  ${coche.id} + '?page=' + ${pagina}">Ver más...</a>
+							<a class="btn btn-outline-primary btn-block" th:href="@{/contacto/form/} +  ${coche.id} + '?page=' + ${pagina}">Interesado por...</a>
+						</div>
+					</div>
+					
+					
+					
+					
+					
+					
+				</div>
+
+				<nav th:replace="paginator-nav :: paginator"></nav>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

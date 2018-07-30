@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<script type="text/javascript" th:fragment="javascript">
+	$(document).ready(function() {
+
+		var urlAjax = $("#urlAjax").val();
+		
+		$("#buscar_coche").autocomplete({
+			
+			source : function(request, response) {
+				$.ajax({
+					//url : "/contacto/cargar-coches/" + request.term,
+					url : urlAjax + request.term,
+					dataType : "json",
+					data : {
+						term : request.term
+					},
+					success : function(data) {
+						response($.map(data, function(item) {
+							return {
+								value : item.id,
+								label : item.marca + ' ' + item.modelo,
+								precio : item.precio,
+							};
+						}));
+					},
+				});
+			},
+			select : function(event, ui) {
+				$("#buscar_coche").val(ui.item.label);
+				return false;
+			}
+		});
+
+	});
+	
+	</script>
+</body>
+</html>

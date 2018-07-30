@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header lead text-primary" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<h4 class="card-title">
+					<a th:href="@{/form}" class="btn btn-success btn-xs" th:text="#{text.coche.crear_coche}">Crear
+						coche</a>
+					<a class="btn btn-success btn-xs float-right mx-1" th:href="@{'/listar'+ '?page=' + ${pagina}(format=csv)}">CSV</a>	
+					<a class="btn btn-outline-success btn-xs float-right mx-1" th:href="@{'/listar'+ '?page=' + ${pagina}(format=xml)}">XML</a>	
+					<a class="btn btn-outline-success btn-xs float-right mx-1" th:href="@{'/listar-rest'(format=xml)}">Todo XML</a>
+					<a class="btn btn-outline-warning btn-xs float-right mx-1" th:href="@{'/listar'(format=json)}">JSON</a>	
+					<a class="btn btn-outline-warning btn-xs float-right mx-1" th:href="@{'/listar-rest'(format=json)}">Todo JSON</a>	
+					<a class="btn btn-outline-warning btn-xs float-right mx-1" th:href="@{'/listar'+ '?page=' + ${pagina}(format=json)}">JSON Paginado</a>	
+				</h4>
+				<table class="table table-striped table-bordered">
+					<thead class="thead-inverse">
+						<tr>
+							<th th:text="#{text.coche.id}">id</th>
+							<th th:text="#{text.coche.precio}">Precio</th>
+							<th th:text="#{text.coche.marca}">Marca</th>
+							<th th:text="#{text.coche.modelo}">Modelo</th>
+							<th th:text="#{text.coche.provincia}">Provincia</th>
+							<!-- <th>Fuel</th> -->
+							<th th:text="#{text.coche.km}">Km</th>
+							<th th:text="#{text.coche.ano}">Año</th>
+							<th th:text="#{text.coche.publicado}">Publicado</th>
+							<!-- th>Cambio</th -->
+							<!-- <th>Plazas</th> -->
+							<!-- <th>Puertas</th> -->
+							<!-- <th>CV</th> -->
+							<!-- <th>Color</th> -->
+							<!-- th>Garantía</th -->
+							<!-- th>Fecha</th -->
+							<th th:text="#{text.coche.crear_contacto}">crear contacto</th>
+							<th th:text="#{text.coche.editar}">editar</th>
+							<th th:text="#{text.coche.eliminar}">eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="coche: ${coches}">
+							<td><a class="btn btn-primary btn-xs" th:href="@{'/ver/' + ${coche.id}+'?page='+${pagina}}" th:text="${coche.id}"></a></td>
+							<td th:text="${coche.precio}"></td>
+							<td th:text="${coche.marca}"></td>
+							<td th:text="${coche.modelo}"></td>
+							<td th:text="${coche.provincia}"></td>
+							<!-- <td th:text="${coche.combustible}"></td> -->
+							<td th:text="${coche.kilometros}"></td>
+							<td th:text="${coche.ano}"></td>
+							<td th:text="${coche.publicado}"></td>
+							<!-- td th:text="${coche.cambio}"></td -->
+							<!-- <td th:text="${coche.plazas}"></td> -->
+							<!-- <td th:text="${coche.puertas}"></td> -->
+							<!-- <td th:text="${coche.potencia}"></td> -->
+							<!-- <td th:text="${coche.color}"></td> -->
+							<!--  td th:text="${coche.garantia}"></td -->
+							<!-- td th:text="${coche.createAt}"></td -->
+							<td><a class="btn btn-success btn-xs"
+								th:href="@{/contacto/form/} + ${coche.id}" th:text="#{text.coche.crear}"></a></td>
+							<td><a class="btn btn-primary btn-xs"
+								th:href="@{/form/} + ${coche.id}" th:text="#{text.coche.editar}"></a></td>
+							<td><a class="btn btn-danger btn-xs"
+								th:href="@{/eliminar/} + ${coche.id}" th:text="#{text.coche.eliminar}"
+								onclick="return confirm('¿Estás seguro de que deseas eliminar?');"></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<nav th:replace="paginator-nav :: paginator"></nav>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

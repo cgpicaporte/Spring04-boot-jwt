@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header lead text-primary" th:text="${titulo}"></div>
+			<div class="card-body">
+
+<!-- 				<h4 class="card-title"> -->
+<!-- 					<a class="btn btn-ligth btn-xs" -->
+<!-- 								th:href="@{'/inicio?page=' + ${pagina}}" th:text="'&laquo; volver'"></a> -->
+<!-- 				</h4> -->
+				<h4 class="card-title">
+					<a th:href="@{'/inicio?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a>
+				</h4>
+
+				<form th:action="@{'/contacto/form?page=' + ${pagina}}" th:object="${contacto}" method="post">
+
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" th:text="'Coche'"></label>
+						<div class="col-sm-6">
+							<input th:value="${contacto.coche.marca} + ' ' + ${contacto.coche.modelo}" 
+							class="form-control" disabled='disabled' />
+						</div>
+					</div>
+										
+					<div class="form-group row">
+						<label for="nombre" class="col-sm-2 col-form-label" th:text="'Su nombre: '"></label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{nombre}" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="email" class="col-sm-2 col-form-label" th:text="'Email: '"></label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{email}" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="telefono" class="col-sm-2 col-form-label" th:text="'Teléfono: '"></label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{telefono}" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="mensaje" class="col-sm-2 col-form-label" th:text="'Mensaje: '"></label>
+						<div class="col-sm-6">
+							<textarea th:field="*{mensaje}" class="form-control"></textarea> 
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="buscar_coche" class="col-sm-2 col-form-label" th:text="'Buscar coche autocomplete: '"></label>
+						<div class="col-sm-6">
+							<input type="text" name="buscar_coche" id="buscar_coche" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+							<input type="submit" th:value="${titulo2}" class="btn btn-success" />
+						</div>
+					</div>
+     
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<input type="hidden" id="urlAjax" th:value="@{'/contacto/cargar-coches/'}" />
+	<script th:replace="contacto/js/autocomplete-coches :: javascript"></script>
+</body>
+</html>

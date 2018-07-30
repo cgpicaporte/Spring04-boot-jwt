@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header lead text-primary" th:text="${titulo}"></div>
+			<div class="card-body">
+				
+				<h4 class="card-title">
+					<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/listar'}"	class="btn btn-light btn-xs">&laquo; volver inicio</a>
+					<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/listar?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a>
+					<a  sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{'/inicio?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a>	
+					<a class="btn btn-danger btn-xs float-right mx-2" th:href="@{'/ver/' + ${coche.id}(format=pdf)}">PDF</a>
+					<a class="btn btn-success btn-xs float-right" th:href="@{'/ver/' + ${coche.id}(format=xlsx)}">XLS</a>
+				</h4>
+				
+				<img th:if="${coche.foto != null AND #strings.length(coche.foto) > 0}" class="img-thumbnail rounded float-left"
+					style="max-width: 25%;" th:src="@{'/uploads/' + ${coche.foto}}"
+					th:alt="${coche.foto}" />
+				
+				<ul class="list-group px-3">
+					<li class="list-group-item active" th:text="'MARCA: ' + ${coche.marca}"></li>
+					<li class="list-group-item" style="color:red" th:text="'PRECIO: ' + ${coche.precio} + '€'"></li>
+					<li class="list-group-item" th:text="'MODELO: ' + ${coche.modelo}"></li>
+					<li class="list-group-item" th:text="'PROVINCIA: ' + ${coche.provincia}"></li>
+					<li class="list-group-item" th:text="'FUEL: ' + ${coche.combustible}"></li>
+					<li class="list-group-item" th:text="'KM: ' + ${coche.kilometros}"></li>
+					<li class="list-group-item" th:text="'AÑO: ' + ${coche.ano}"></li>
+					<li class="list-group-item" th:text="'CAMBIO: ' + ${coche.cambio}"></li>
+					<li class="list-group-item" th:text="'PLAZAS: ' + ${coche.plazas}"></li>
+					<li class="list-group-item" th:text="'PUERTAS: ' + ${coche.puertas}"></li>
+					<li class="list-group-item" th:text="'CV: ' + ${coche.potencia}"></li>
+					<li class="list-group-item" th:text="'COLOR: ' + ${coche.color}"></li>
+					<li class="list-group-item" th:text="'GARANTÍA: ' + ${coche.garantia}"></li>
+					<li class="list-group-item" th:text="'FECHA: ' + ${coche.createAt}"></li>
+					<li sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item"><a th:href="@{'/listar?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a></li>
+<!-- 					<li sec:authorize="!hasRole('ROLE_ADMIN')" class="list-group-item"><a th:href="@{'/inicio?page=' + ${pagina}}" class="btn btn-secondary btn-xs align-right">Volver</a></li> -->
+				</ul>
+				
+				<div  sec:authorize="hasRole('ROLE_ADMIN')" th:if="${#lists.isEmpty(coche.contactos)}" class="alert alert-info my-4" th:text="'No hay contactos asignados para este coche: ' + ${coche.marca} + ' ' + ${coche.modelo}"></div>
+				<table  sec:authorize="hasRole('ROLE_ADMIN')" th:if="${not #lists.isEmpty(coche.contactos)}" class="table table-bordered table-striped my-4">
+				<thead class="thead-inverse">
+					<tr>
+						<th class="text-center" colspan=7>INTERESADOS EN EL VEHÍCULO</th>
+					</tr>
+				</thead>
+				<thead class="thead-inverse">
+					<tr>
+						<th sec:authorize="hasRole('ROLE_USER')">id</th>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Teléfono</th>
+						<th>Fecha</th>
+						<th>Mensaje</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="contacto: ${coche.contactos}">
+						<td th:text="${contacto.id}"></td>
+						<td th:text="${contacto.nombre}"></td>
+						<td th:text="${contacto.email}"></td>
+						<td th:text="${contacto.telefono}"></td>
+						<td th:text="${contacto.createAt}"></td>
+						<td th:text="${contacto.mensaje}"></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-xs"
+								th:href="@{/contacto/eliminar/} + ${coche.id} + '/' + ${contacto.id}" th:text="'eliminar'"
+								onclick="return confirm('¿Estás seguro de que deseas eliminar?');"></a></td>
+					</tr>				
+				</tbody>	
+				</table>
+				
+			</div>
+		
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
